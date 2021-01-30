@@ -7,8 +7,6 @@ from matplotlib import pyplot as plt
 import cv2
 
 
-
-
 def main():
     # Question1()
     facesMatrix1600, featureMeans, featureStdDevs, eigenValues, eigenVectors = Question2()
@@ -89,7 +87,7 @@ def Question2():
         # imageData = np.asarray(image)
         imageResized = image.resize((40, 40))
         imageResizedData = np.asarray(imageResized)
-        imageResizedData = imageResizedData.astype("double")
+        imageResizedData = imageResizedData.astype("float64")
         flattenImageData = imageResizedData.flatten(order="C")
 
         facesMatrix1600.append(flattenImageData)
@@ -124,7 +122,9 @@ def Question2():
     # reducing the data using PCA
     # print(facesMatrix1600)
 
-    covFaces = np.cov(np.transpose(facesMatrix1600), ddof=1)
+    facesMatrix1600 = np.transpose(facesMatrix1600)
+
+    covFaces = np.cov(facesMatrix1600, ddof=1)
     U, S, V = np.linalg.svd(covFaces)
     # eigW, eigV = np.linalg.eig(covFaces)
 
@@ -135,11 +135,11 @@ def Question2():
     eigenValues = eigenValues[order]
     eigenVectors = eigenVectors[:, order]
 
-    #print("EigenValues:\n", eigenValues)
-    #print(len(eigenValues))
+    print("EigenValues:\n", eigenValues)
+    print(len(eigenValues))
 
-    #print("EigenVectors:\n", eigenVectors)
-    #print(len(eigenVectors))
+    print("EigenVectors:\n", eigenVectors)
+    print(len(eigenVectors))
 
     # the two largest are just the first two since we ordered it
     eVal1 = eigenValues[0]
@@ -151,10 +151,10 @@ def Question2():
 
     # print(eVec2.dtype)
     # print(U)
-    print("eVec1:", eVec1)
-    print("eVec2:", eVec2)
-    print(np.linalg.norm(eVec1))
-    print(np.linalg.norm(eVec2))
+    # print("eVec1:", eVec1)
+    # print("eVec2:", eVec2)
+    # print(np.linalg.norm(eVec1))
+    # print(np.linalg.norm(eVec2))
 
     W = np.array([eVec1, eVec2]).transpose()
     # print(W.dtype)
